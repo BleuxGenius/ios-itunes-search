@@ -10,23 +10,25 @@ import Foundation
 
 class SearchResultController {
 
-var baseURL = URL(string: "https://itunes.apple.com/search?parameterkeyvalue")!
+var baseURL = URL(string: "https://itunes.apple.com/search")!
 
     var searchResults: [SearchResult] = []
     
-    func performSearch(with searchTerm: String, resultType: ResultType, completionClosure: @escaping () -> Void ) {
+    func performSearch(with searchTerm: String, resultType: ResultType, completionClosure: @escaping (Error?) -> Void ) {
         
 //         Build out the URL
         
-        var searchURL = baseURL.appendingPathComponent("searchResults")
+//        var searchURL = baseURL.appendingPathComponent("searchResults")
         
-        var components = URLComponents(url: searchURL, resolvingAgainstBaseURL: true)
-        let searchQueryItem = URLQueryItem(name: "search", value: searchTerm)
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
+       
+        let searchQueryItem = URLQueryItem(name: "term", value: searchTerm)
+        let entityQueryItem = URLQueryItem(name: "entity", value: resultType.rawValue)
         
-        components?.queryItems = [searchQueryItem]
+        components?.queryItems = [searchQueryItem, entityQueryItem]
         
         guard let requestURL = components?.url else {
-            completionClosure()
+            NSLog("Error delivering request URL ")
             return
         }
 //            Create a URLRequest
@@ -39,27 +41,27 @@ var baseURL = URL(string: "https://itunes.apple.com/search?parameterkeyvalue")!
 //            Handle ny errors
             if let error = error {
                 NSLog("Error fetching search: \(error)")
-                completionClosure()
-                return
+            
             }
 //            (USUALLY decode data)
             
             guard let data = data else {
                 NSLog("No data returned from search")
-                completionClosure()
+                completionClosure(nil)
                 return
             }
             
             let decoder = JSONDecoder()
             
             do {
-                let search = try decoder.decode(SearchResult.self, from: data)
-                self.searchResults = [search.self]
+                let search = try decoder.decode(SearchResults.self, from: data)
+                self.searchResults = search.results
                 
             } catch {
                 NSLog("Unable to decode data into search: \(error)")
+                completionClosure(error)
             }
-            completionClosure()
+            completionClosure(nil)
         }
 //            this is what preforms the data task or gets it to go to the server
         dataTask.resume()

@@ -25,6 +25,9 @@
                                         <segment title="Music"/>
                                         <segment title="Movies"/>
                                     </segments>
+                                    <connections>
+                                        <action selector="segmentedControlSwitched:" destination="9X3-pa-cb7" eventType="valueChanged" id="BlF-IZ-lUU"/>
+                                    </connections>
                                 </segmentedControl>
                                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="hF8-0C-CqL">
                                     <rect key="frame" x="0.0" y="31" width="414" height="44"/>
@@ -46,7 +49,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="BMY-oJ-yeA" detailTextLabel="Se9-Cb-Swh" style="IBUITableViewCellStyleSubtitle" id="85P-9A-A3g">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchResultCell" textLabel="BMY-oJ-yeA" detailTextLabel="Se9-Cb-Swh" style="IBUITableViewCellStyleSubtitle" id="85P-9A-A3g" customClass="SearchResultTableViewCell" customModule="iTunes_Search" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="112" width="414" height="55.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="85P-9A-A3g" id="GDw-ye-sTp">
@@ -69,6 +72,10 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="creatorLabel" destination="BMY-oJ-yeA" id="Jka-H8-vpW"/>
+                                    <outlet property="titleLabel" destination="Se9-Cb-Swh" id="xLZ-4a-frd"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -77,6 +84,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="iTunes Search" id="j74-QQ-cLb"/>
+                    <connections>
+                        <outlet property="searchBar" destination="hF8-0C-CqL" id="uxO-VQ-WQv"/>
+                        <outlet property="segmentedController" destination="PtM-0x-o9w" id="gKy-1j-UpR"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upt-B2-STv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
